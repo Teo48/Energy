@@ -1,0 +1,37 @@
+version: '3'
+services:
+  elasticsearch:
+    image: elasticsearch:7.14.2
+    container_name: elastic_7
+    environment:
+      - 'bootstrap.system_call_filter=false'
+      - 'bootstrap.memory_lock=false'
+      - 'ES_JAVA_OPT=-Xms2g -Xmx2g'
+      - discovery.type=single-node
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    ports:
+      - 9200:9200
+    networks:
+      - es_7
+  kibana:
+    image: kibana:7.14.2
+    container_name: kibana_7
+    depends_on:
+      - elasticsearch
+    ports:
+      - 5601:5601
+    environment:
+     - 'ELASTICSEARCH_URL=http://elasticsearch:9200'
+     - 'ES_JAVA_OPT=-Xms2g -Xmx2g'
+    networks:
+      - es_7
+
+networks:
+  es_7:
+    driver: bridge
