@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: knote
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: knote
+  template:
+    metadata:
+      labels:
+        app: knote
+    spec:
+      containers:
+        - name: app
+          image: lucianoprea1999/cloudstock
+          ports:
+            - containerPort: 8080
+          env:
+            - name: APCA_API_KEY_ID
+              value: PKK4NIBQLJMF9416WPDZ
+            - name: APCA_API_SECRET_KEY
+              value: SKFBDYDsASADPtrVJlILTe9khlDdKV7vjeJSNess
+            - name: HOSTNAME
+              value: elasticsearch
+          imagePullPolicy: Always
