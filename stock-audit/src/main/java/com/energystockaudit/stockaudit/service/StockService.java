@@ -6,10 +6,8 @@ import com.energystockaudit.stockaudit.domain.Stock;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.opensearch.client.opensearch._types.Result;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.Reader;
 import java.util.List;
 import java.util.Map;
 
@@ -18,10 +16,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class StockService {
   private final ElasticsearchConnectorImpl elasticsearchConnector;
-
-  public Result saveMappedEvent(Stock stock) {
-    return elasticsearchConnector.saveStockQuotation(stock);
-  }
 
   public List<Stock> search(FilterParameters filterParameters) {
     return elasticsearchConnector.search(filterParameters);
