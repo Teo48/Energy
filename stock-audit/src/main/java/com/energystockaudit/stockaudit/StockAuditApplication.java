@@ -13,7 +13,7 @@ public class StockAuditApplication {
 
 	public static void main(String[] args) {
 		var context = SpringApplication.run(StockAuditApplication.class, args);
-//		var stockIngestService = context.getBean(StockIngestService.class);
-//		stockIngestService.ingestStockQuotations();
+		var stockIngestService = context.getBean(StockIngestService.class);
+		stockIngestService.ingestStockQuotations();
 	}
 }
