@@ -7,6 +7,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Getter
@@ -16,7 +17,7 @@ import java.util.Date;
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Document(indexName = "${com.energystockaudit.elasticsearch.index}")
-public class Stock {
+public class Stock implements Serializable {
   @Field(type = FieldType.Keyword)
   private String symbol;
   @Field(type = FieldType.Text)

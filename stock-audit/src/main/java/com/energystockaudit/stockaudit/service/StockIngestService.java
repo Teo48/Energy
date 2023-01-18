@@ -11,6 +11,7 @@ import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +35,8 @@ import java.util.stream.Collectors;
 public class StockIngestService {
   @Autowired
   private ElasticsearchConnectorImpl elasticsearchConnector;
+  @Autowired
+  private RedisTemplate<String, Object> redisTemplate;
   public static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
   private final Client client;
   private WebTarget webTarget;
@@ -104,6 +107,7 @@ public class StockIngestService {
           .peek(i -> i.setCompany(stockCompanyMap.get(stock)))
           .collect(Collectors.toList());
       stocks.forEach(i -> elasticsearchConnector.saveStockQuotation(i));
+      stocks.forEach(i -> redisTemplate.opsForList().rightPush(i.getSymbol(), i));
 
       if (nextPageToken != null) {
         callStockApi(stock, nextPageToken);
